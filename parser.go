@@ -1,11 +1,13 @@
 package sitemap
 
 import (
+	"compress/gzip"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 )
 
 //Index sitemap index
@@ -22,10 +24,10 @@ type Sitemap struct {
 
 //Element single sitemap element
 type Element struct {
-	Loc        string  `xml:"loc"`
-	LastMod    string  `xml:"lastmod"`
-	ChangeFreq string  `xml:"changefreq"`
-	Priority   float32 `xml:"priority"`
+	Loc        string    `xml:"loc"`
+	LastMod    time.Time `xml:"lastmod"`
+	ChangeFreq string    `xml:"changefreq"`
+	Priority   float32   `xml:"priority"`
 }
 
 //GetIndex get sitemap index from URL
@@ -71,8 +73,21 @@ func GetSitemap(url string) (*Sitemap, error) {
 }
 
 //GetSitemapGZ get sitemaps from .gz URL
-func GetSitemapGZ(url string) ([]*Sitemap, error) {
-
+func GetSitemapGZ(url string) (*Sitemap, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	reader, err := gzip.NewReader(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	bodyBytes, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return nil, err
+	}
+	return getSitemapFromBytes(bodyBytes)
 }
 
 //GetSitemaps loads all sitemaps from index
