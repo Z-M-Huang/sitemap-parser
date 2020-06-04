@@ -5,7 +5,7 @@
       <lastmod>2020-06-01T13:24:19-08:00</lastmod>
    </sitemap>
    <sitemap>
-      <loc>https://github.com/Z-M-Huang/sitemap-parser/raw/master/test/sample_sitemap.xml.gz</loc>
+      <loc>https://raw.githubusercontent.com/Z-M-Huang/sitemap-parser/raw/master/test/sample_sitemap.xml.gz</loc>
       <lastmod>2020-06-01T13:24:21-08:00</lastmod>
    </sitemap>
 </sitemapindex>
